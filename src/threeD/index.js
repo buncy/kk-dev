@@ -6,6 +6,8 @@ import { useFrame, useThree } from '@react-three/fiber';
 export default function Particles({ count, mouse }) {
     const mesh = useRef()
     const light = useRef()
+
+    const light3 = useRef()
     const { size, viewport } = useThree()
     const aspect = size.width / viewport.width
 
@@ -28,6 +30,8 @@ export default function Particles({ count, mouse }) {
     useFrame((state) => {
         // Makes the light follow the mouse
         light.current.position.set(mouse.current[0] / aspect, -mouse.current[1] / aspect, 0)
+
+
         // Run through the randomized data to calculate some movement
         particles.forEach((particle, i) => {
             let { t, factor, speed, xFactor, yFactor, zFactor } = particle
@@ -54,7 +58,8 @@ export default function Particles({ count, mouse }) {
     })
     return (
         <>
-            <pointLight ref={light} distance={40} intensity={8} color="lightblue" />
+            <ambientLight ref={light3} color="yellow" intensity={10} />
+            <pointLight ref={light} distance={40} intensity={8} color="yellow" />
             <instancedMesh ref={mesh} args={[null, null, count]}>
                 <dodecahedronGeometry args={[0.2, 0]} />
                 <meshPhongMaterial color="#050505" />
